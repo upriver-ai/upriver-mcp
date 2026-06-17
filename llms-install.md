@@ -29,6 +29,18 @@ hosted endpoint.
    }
    ```
 
+   This generic form is correct for Cursor and most clients, but a few use a
+   different shape — using the generic block with them silently fails:
+
+   - **Claude Code (CLI):** prefer the command
+     `claude mcp add --transport http upriver https://mcp.upriver.ai/mcp`
+     (append `--header "X-API-Key: <KEY>"` for API-key auth).
+   - **VS Code (GitHub Copilot):** top-level key is `servers` (not `mcpServers`)
+     and a `"type": "http"` field is required.
+   - **Cline:** add `"type": "streamableHttp"` to the server entry, or it falls
+     back to legacy SSE and the connection fails.
+   - **Windsurf:** the URL field is `serverUrl`, not `url`.
+
 3. If — and only if — the client cannot perform OAuth and the user has supplied
    an Upriver API key, add it as a header instead of prompting for OAuth:
 
